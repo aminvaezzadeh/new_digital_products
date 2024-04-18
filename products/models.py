@@ -9,6 +9,9 @@ class Product(models.Model):
     created_time=models.DateTimeField(_('created time'),auto_now_add=True)
     updated_time=models.DateTimeField(_('uploaded time'), auto_now=True)
 
+    def __str__(self):
+        return self.title
+
     class Meta:
         db_table='products'
         verbose_name=_('Product')
@@ -23,6 +26,9 @@ class Category(models.Model):
     is_enable=models.BooleanField(_('is enable'),default=True)
     created_time=models.DateTimeField(_('created time'),auto_now_add=True)
     updated_time=models.DateTimeField(_('updated time'),auto_now=True)
+
+    def __str__(self):
+        return self.title
 
 
     class Meta:
