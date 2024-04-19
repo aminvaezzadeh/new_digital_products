@@ -37,7 +37,7 @@ class Category(models.Model):
         verbose_name_plural=_('Categories')
 
 class File(models.Model):
-    product=models.ForeignKey('product',verbose_name=_('product'),on_delete=models.CASCADE)
+    product=models.ForeignKey('product',verbose_name=_('product'), related_name='files',on_delete=models.CASCADE)
     title=models.CharField(_('title'),max_length=50)
     file=models.FileField(_('file'),upload_to='files/%y/%m/%d/')
     is_enable=models.BooleanField(_('is enable'),default=True)
