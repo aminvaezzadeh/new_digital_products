@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
 class Product(models.Model):
     title=models.CharField(_('title'),max_length=50)
     description=models.TextField(_('description'),blank=True)
@@ -9,13 +10,13 @@ class Product(models.Model):
     created_time=models.DateTimeField(_('created time'),auto_now_add=True)
     updated_time=models.DateTimeField(_('uploaded time'), auto_now=True)
 
-    def __str__(self):
-        return self.title
-
     class Meta:
         db_table='products'
         verbose_name=_('Product')
         verbose_name_plural=_('Products')
+
+    def __str__(self):
+        return self.title
 
 
 class Category(models.Model):
@@ -27,16 +28,20 @@ class Category(models.Model):
     created_time=models.DateTimeField(_('created time'),auto_now_add=True)
     updated_time=models.DateTimeField(_('updated time'),auto_now=True)
 
-    def __str__(self):
-        return self.title
-
-
     class Meta:
         db_table='categories'
         verbose_name=_('Category')
         verbose_name_plural=_('Categories')
 
+    def __str__(self):
+        return self.title
+
 class File(models.Model):
+    FILE_AUDIO=1
+    FILE_VIDEO=2
+    FILE_PDF=3
+    FILE_TYPES=((FILE_AUDIO,_('audio')),(FILE_VIDEO,_('video')),(FILE_PDF,_('pdf')))
+    file_type=models.PositiveSmallIntegerField(_('file type'),choices=FILE_TYPES,default=2)
     product=models.ForeignKey('product',verbose_name=_('product'), related_name='files',on_delete=models.CASCADE)
     title=models.CharField(_('title'),max_length=50)
     file=models.FileField(_('file'),upload_to='files/%y/%m/%d/')
@@ -48,5 +53,8 @@ class File(models.Model):
         db_table='files'
         verbose_name=_('File')
         verbose_name_plural=_('Files')
+
+    def __str__(self):
+        return self.title
 
 
