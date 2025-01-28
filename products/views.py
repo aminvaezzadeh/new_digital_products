@@ -5,11 +5,12 @@ from rest_framework import status
 from .models import Category,Product,File
 from .serializers import CategorySerializer,FileSerializer,ProductSerializer
 from  rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
+from subscriptions.models import Subscription
+from django.utils import timezone
 class ProductListView(APIView):
-
     def get(self,request):
-        # print(request.user)
-        # print(request.auth)
+        print(request.user)
+        print(request.auth)
 
         products=Product.objects.all()
         serializer=ProductSerializer(products,many=True , context={'request': request})
@@ -18,6 +19,13 @@ class ProductListView(APIView):
 class ProductDetailView(APIView):
     permission_classes = [IsAuthenticated]
     def get(self,request,pk):
+        print(request.user)
+        print(request.auth)
+        if not Subscription.objects.filter(
+            user=request.user,
+            expire_time__gt=timezone.now(),
+        ).exists():
+            return Response({'Detail':'you dont have a valid subscription'},status=status.HTTP_401_UNAUTHORIZED)
         try:
             product=Product.objects.get(pk=pk)
         except Product.DoesNotExist:

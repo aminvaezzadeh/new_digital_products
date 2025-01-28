@@ -14,7 +14,7 @@ class RegisterView(APIView):
 
         try:
             user=User.objects.get(phone_number=phone_number)
-            return Response({'detail':'User already registered'})
+            # return Response({'detail':'User already registered'})
         except User.DoesNotExist:
             user=User.objects.create_user(phone_number=phone_number)
 
